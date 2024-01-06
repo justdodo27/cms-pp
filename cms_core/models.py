@@ -23,6 +23,9 @@ class Image(models.Model):
         blank=False,
     )
 
+    def __str__(self):
+        return self.image.name
+
 
 SECTION_TYPES_CHOICES = [
     ("h", "Home"),
@@ -53,6 +56,9 @@ class Section(models.Model):
         blank=True,
     )
 
+    def __str__(self):
+        return self.header
+
 
 class Skill(models.Model):
     skill_id = models.IntegerField(primary_key=True)
@@ -72,6 +78,9 @@ class Skill(models.Model):
         blank=False,
     )
 
+    def __str__(self):
+        return self.name
+
 
 class Statistic(models.Model):
     statistic_id = models.IntegerField(primary_key=True)
@@ -89,6 +98,9 @@ class Statistic(models.Model):
         null=False,
         blank=False,
     )
+
+    def __str__(self):
+        return self.label
 
 
 def user_cv_directory_path(instance, filename): 
@@ -110,6 +122,9 @@ class CV(models.Model):
         null=False,
         blank=False,
     )
+
+    def __str__(self):
+        return self.file.name
 
 
 HISTORY_TYPES_CHOICES = [
@@ -139,6 +154,9 @@ class History(models.Model):
         blank=False,
     )
 
+    def __str__(self):
+        return self.title
+
 
 class Service(models.Model):
     service_id = models.IntegerField(primary_key=True)
@@ -164,6 +182,9 @@ class Service(models.Model):
         null=False,
         blank=False,
     )
+
+    def __str__(self):
+        return self.title
 
 
 class Project(models.Model):
@@ -192,6 +213,9 @@ class Project(models.Model):
         blank=False,
     )
 
+    def __str__(self):
+        return self.title
+
 
 class Social(models.Model):
     social_id = models.IntegerField(primary_key=True)
@@ -216,6 +240,9 @@ class Social(models.Model):
         blank=False,
     )
 
+    def __str__(self):
+        return self.title
+
 
 class Message(models.Model):
     message_id = models.IntegerField(primary_key=True)
@@ -229,3 +256,6 @@ class Message(models.Model):
         null=False,
         blank=False,
     )
+
+    def __str__(self):
+        return self.subject
