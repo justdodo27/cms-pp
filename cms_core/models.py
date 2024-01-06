@@ -3,8 +3,8 @@ from django.db import models
 
 
 def user_image_directory_path(instance, filename): 
-    # file will be uploaded to MEDIA_ROOT /cvs/user_<id>/<filename> 
-    return 'images/user_{0}/{1}'.format(instance.user.id, filename) 
+    # file will be uploaded to MEDIA_ROOT /images/user_<id>/<filename> 
+    return 'images/user_{0}/{1}'.format(instance.user_id_id, filename) 
 
 IMAGE_TYPES_CHOICES = [
     ('i', 'Icon'),
@@ -92,9 +92,8 @@ class Statistic(models.Model):
 
 
 def user_cv_directory_path(instance, filename): 
-  
     # file will be uploaded to MEDIA_ROOT /cvs/user_<id>/<filename> 
-    return 'cvs/user_{0}/{1}'.format(instance.user.id, filename) 
+    return 'cvs/user_{0}/{1}'.format(instance.user_id_id, filename) 
 
 class CV(models.Model):
     cv_id = models.IntegerField(primary_key=True)
