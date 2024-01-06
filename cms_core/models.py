@@ -24,7 +24,7 @@ class Image(models.Model):
     )
 
     def __str__(self):
-        return self.image.name
+        return self.image.name.split('/')[-1]
 
 
 SECTION_TYPES_CHOICES = [
