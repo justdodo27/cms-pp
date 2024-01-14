@@ -1,6 +1,8 @@
+from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import User
 from django.db import models
 
+from datetime import datetime
 
 def user_image_directory_path(instance, filename): 
     # file will be uploaded to MEDIA_ROOT /images/user_<id>/<filename> 
@@ -12,12 +14,23 @@ IMAGE_TYPES_CHOICES = [
     ('m', 'Medium'),
 ]
 
+
+class CustomUser(AbstractUser):
+    address = models.CharField(max_length=128)
+    phone_number = models.CharField(max_length=11)
+    fullname = models.CharField(max_length=128)
+    birth_date = models.DateField(default=datetime.now)
+    description = models.TextField()
+    job = models.CharField(max_length=64)
+    website = models.CharField(max_length=64)
+
+
 class Image(models.Model):
     image_id = models.IntegerField(primary_key=True)
     image = models.ImageField(upload_to=user_image_directory_path)
     type = models.CharField(max_length=64, choices=IMAGE_TYPES_CHOICES)
     user_id = models.ForeignKey(
-        User,
+        CustomUser,
         on_delete=models.CASCADE,
         null=False,
         blank=False,
@@ -44,7 +57,7 @@ class Section(models.Model):
     visible = models.BooleanField()
     type = models.CharField(max_length=64, choices=SECTION_TYPES_CHOICES)
     user_id = models.ForeignKey(
-        User,
+        CustomUser,
         on_delete=models.CASCADE,
         null=False,
         blank=False,
@@ -72,7 +85,7 @@ class Skill(models.Model):
         blank=True,
     )
     user_id = models.ForeignKey(
-        User,
+        CustomUser,
         on_delete=models.CASCADE,
         null=False,
         blank=False,
@@ -93,7 +106,7 @@ class Statistic(models.Model):
         blank=True,
     )
     user_id = models.ForeignKey(
-        User,
+        CustomUser,
         on_delete=models.CASCADE,
         null=False,
         blank=False,
@@ -117,7 +130,7 @@ class CV(models.Model):
         blank=True,
     )
     user_id = models.ForeignKey(
-        User,
+        CustomUser,
         on_delete=models.CASCADE,
         null=False,
         blank=False,
@@ -148,7 +161,7 @@ class History(models.Model):
         blank=True,
     )
     user_id = models.ForeignKey(
-        User,
+        CustomUser,
         on_delete=models.CASCADE,
         null=False,
         blank=False,
@@ -180,7 +193,7 @@ class Service(models.Model):
         blank=True,
     )
     user_id = models.ForeignKey(
-        User,
+        CustomUser,
         on_delete=models.CASCADE,
         null=False,
         blank=False,
@@ -210,7 +223,7 @@ class Project(models.Model):
         blank=True,
     )
     user_id = models.ForeignKey(
-        User,
+        CustomUser,
         on_delete=models.CASCADE,
         null=False,
         blank=False,
@@ -237,7 +250,7 @@ class Social(models.Model):
         blank=True,
     )
     user_id = models.ForeignKey(
-        User,
+        CustomUser,
         on_delete=models.CASCADE,
         null=False,
         blank=False,
@@ -254,7 +267,7 @@ class Message(models.Model):
     subject = models.CharField(max_length=64)
     message = models.TextField()
     user_id = models.ForeignKey(
-        User,
+        CustomUser,
         on_delete=models.CASCADE,
         null=False,
         blank=False,

@@ -2,7 +2,7 @@ from typing import Any
 from django.contrib import admin
 from django.db.models.query import QuerySet
 from django.http.request import HttpRequest
-from .models import Section, Skill, Image, Statistic, CV, History, Service, Project, Social, Message
+from .models import Section, Skill, Image, Statistic, CV, History, Service, Project, Social, Message, CustomUser
 
 
 class RequestUserModelAdmin(admin.ModelAdmin):
@@ -14,6 +14,15 @@ class RequestUserModelAdmin(admin.ModelAdmin):
         # associating the current logged in user to the client_id
         obj.user_id = request.user
         super().save_model(request, obj, form, change)
+
+@admin.register(CustomUser)
+class CustomUserAdmin(admin.ModelAdmin):
+    fields = ["fullname", "birth_date", "description", "address", "phone_number", "job", "website", "email"]
+    list_display = ["id", "username", "fullname"]
+    
+    def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
+        query = super().get_queryset(request).filter(id=request.user.id)
+        return query
 
 @admin.register(Image)
 class ImageAdmin(RequestUserModelAdmin):
