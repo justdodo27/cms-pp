@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from .models import Section, History, CustomUser, Message, Social, Skill, Service
+from .models import Section, History, CustomUser, Message, Social, Skill, Service, Statistic
 from .forms import MessageForm
 
 from itertools import groupby
@@ -56,14 +56,16 @@ def website(request, user_id):
     }
     skills = Skill.objects.filter(user_id=user_id, visibility=True).all()
     services = Service.objects.filter(user_id=user_id, visible=True).all()
+    statistics = Statistic.objects.filter(user_id=user_id).all()
 
     context = {
+        "user": user_data,
         "sections": sections,
         "histories": histories_data,
         "socials": group_data_by_section(socials),
         "skills": group_data_by_section(skills),
         "services": group_data_by_section(services),
-        "user": user_data,
+        "statistics": group_data_by_section(statistics),
         "form": MessageForm(),
         "message": message
     }
