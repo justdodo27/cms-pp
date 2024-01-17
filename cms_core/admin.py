@@ -2,8 +2,10 @@ from typing import Any
 from django.contrib import admin
 from django.db.models.query import QuerySet
 from django.http.request import HttpRequest
+from django.contrib.auth.models import Group
 from .models import Section, Skill, Image, Statistic, CV, History, Service, Project, Social, Message, CustomUser
 
+admin.site.unregister(Group)
 
 class RequestUserModelAdmin(admin.ModelAdmin):
     def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
@@ -19,10 +21,13 @@ class RequestUserModelAdmin(admin.ModelAdmin):
 class CustomUserAdmin(admin.ModelAdmin):
     fields = ["fullname", "birth_date", "description", "address", "phone_number", "job", "website", "email"]
     list_display = ["id", "username", "fullname"]
-    
+
     def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
         query = super().get_queryset(request).filter(id=request.user.id)
         return query
+
+    def has_add_permission(self, request, obj=None):
+        return False
 
 @admin.register(Image)
 class ImageAdmin(RequestUserModelAdmin):
@@ -116,3 +121,6 @@ class SocialAdmin(RequestUserModelAdmin):
 class MessageAdmin(RequestUserModelAdmin):
     fields = ["name", "email", "subject", "message"]
     list_display = ["message_id", "name", "email", "subject", "message", "user_id"]
+
+    def has_add_permission(self, request, obj=None):
+        return False
