@@ -87,10 +87,10 @@
 					<h1>I'm {{ user.fullname }}</h1>
 
 					<p class="intro-position">
-						<span>{{ section.description }}</span>
+						<span>{{ user.job }}</span>
 					</p>
 
-					<a class="button stroke smoothscroll" href="#about" title="">More About Me</a>
+					<a class="button stroke smoothscroll" href="#about" title="">{{ section.description }}</a>
 
 				</div>  
 				
@@ -133,28 +133,26 @@
    		<div class="col-six tab-full">
 
    			<h3>Profile</h3>
-   			<p>Lorem ipsum Qui veniam ut consequat ex ullamco nulla in non ut esse in magna sint minim officia consectetur nisi commodo ea magna pariatur nisi cillum.</p>
-
    			<ul class="info-list">
    				<li>
    					<strong>Fullname:</strong>
-   					<span>Juan Dela Cruz</span>
+   					<span>{{ user.fullname }}</span>
    				</li>
    				<li>
    					<strong>Birth Date:</strong>
-   					<span>September 28, 1987</span>
+   					<span>{{ user.birth_date }}</span>
    				</li>
    				<li>
    					<strong>Job:</strong>
-   					<span>Freelancer, Frontend Developer</span>
+   					<span>{{ user.job }}</span>
    				</li>
    				<li>
    					<strong>Website:</strong>
-   					<span>www.kardswebsite.com</span>
+   					<span>{{ user.website }}</span>
    				</li>
    				<li>
    					<strong>Email:</strong>
-   					<span>me@kardswebsite.com</span>
+   					<span>{{ user.email }}</span>
    				</li>
 
    			</ul> <!-- /info-list -->
@@ -164,33 +162,16 @@
    		<div class="col-six tab-full">
 
    			<h3>Skills</h3>
-   			<p>Lorem ipsum Qui veniam ut consequat ex ullamco nulla in non ut esse in magna sint minim officia consectetur nisi commodo ea magna pariatur nisi cillum.</p>
-
-				<ul class="skill-bars">
-				   <li>
-				   	<div class="progress percent90"><span>90%</span></div>
-				   	<strong>HTML5</strong>
-				   </li>
-				   <li>
-				   	<div class="progress percent85"><span>85%</span></div>
-				   	<strong>CSS3</strong>
-				   </li>
-				   <li>
-				   	<div class="progress percent70"><span>70%</span></div>
-				   	<strong>JQuery</strong>
-				   </li>
-				   <li>
-				   	<div class="progress percent95"><span>95%</span></div>
-				   	<strong>PHP</strong>
-				   </li>
-				   <li>
-
-				   	<div class="progress percent75"><span>75%</span></div>
-				   	<strong>Wordpress</strong>
-				   </li>
-      
-				</ul> <!-- /skill-bars -->		
-
+				{% if skills|get_item:section.section_id %}
+					<ul class="skill-bars">
+						{% for skill in skills|get_item:section.section_id %}
+							<li>
+								<div class="progress percent{{ skill.value|floatformat:"0" }}"><span>{{ skill.value|floatformat:"0" }}%</span></div>
+								<strong>{{ skill }}</strong>
+							</li>
+						{% endfor %}
+					</ul> <!-- /skill-bars -->		
+				{% endif %}
    		</div>
 
    	</div>

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from .models import Section, History, CustomUser, Message, Social
+from .models import Section, History, CustomUser, Message, Social, Skill
 from .forms import MessageForm
 
 from itertools import groupby
@@ -22,12 +22,12 @@ def categorize_histories(x):
     }
 
 
-def parse_socials(x):
-    socials = []
+def parse_data(x):
+    data = []
     for el in x:
-        socials.append(el)
+        data.append(el)
 
-    return socials
+    return data
 
 
 def website(request, user_id):
@@ -50,7 +50,7 @@ def website(request, user_id):
     sections = Section.objects.filter(user_id=user_id, visible=True).all()
     socials = Social.objects.filter(user_id=user_id).all()
     social_data = {
-        i: parse_socials(j)
+        i: parse_data(j)
         for i, j in groupby(socials, lambda social: social.section_id.section_id)
     }
     user_data = CustomUser.objects.get(id=user_id)
@@ -59,11 +59,17 @@ def website(request, user_id):
         i: categorize_histories(j)
         for i, j in groupby(histories, lambda history: history.section_id.section_id)
     }
+    skills = Skill.objects.filter(user_id=user_id).all()
+    skills_data = {
+        i: parse_data(j)
+        for i, j in groupby(skills, lambda skill: skill.section_id.section_id)
+    }
 
     context = {
         "sections": sections,
         "histories": histories_data,
         "socials": social_data,
+        "skills": skills_data,
         "user": user_data,
         "form": MessageForm(),
         "message": message
