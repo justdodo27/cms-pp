@@ -49,13 +49,21 @@
 
 		   	<nav id="main-nav-wrap">
 					<ul class="main-navigation">
-						<li class="current"><a class="smoothscroll"  href="#intro" title="">Home</a></li>
-						<li><a class="smoothscroll"  href="#about" title="">About</a></li>
-						<li><a class="smoothscroll"  href="#resume" title="">Resume</a></li>
-						<li><a class="smoothscroll"  href="#portfolio" title="">Portfolio</a></li>
-						<li><a class="smoothscroll"  href="#services" title="">Services</a></li>					
-						<li><a class="smoothscroll"  href="#contact" title="">Contact</a></li>	
-						<li><a href="styles.html" title="">Style Demo</a></li>				
+						{% for section in sections %}
+							{% if section.type == 'h' %}
+								<li class="current"><a class="smoothscroll"  href="#intro" title="">Home</a></li>
+							{% elif section.type == 'a' %}
+								<li><a class="smoothscroll"  href="#about" title="">About</a></li>
+							{% elif section.type == 'r' %}
+								<li><a class="smoothscroll"  href="#resume" title="">Resume</a></li>
+							{% elif section.type == 'p' %}
+								<li><a class="smoothscroll"  href="#portfolio" title="">Portfolio</a></li>
+							{% elif section.type == 's' %}
+								<li><a class="smoothscroll"  href="#services" title="">Services</a></li>
+							{% elif section.type == 'c' %}			
+								<li><a class="smoothscroll"  href="#contact" title="">Contact</a></li>	
+							{% endif %}
+						{% endfor %}
 					</ul>
 				</nav>    		
    		</div> <!-- /top-bar --> 
