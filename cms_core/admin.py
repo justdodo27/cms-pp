@@ -2,7 +2,10 @@ from typing import Any
 from django.contrib import admin
 from django.db.models.query import QuerySet
 from django.http.request import HttpRequest
+from django.contrib.auth.models import Group
 from .models import Section, Skill, Image, Statistic, CV, History, Service, Project, Social, Message, CustomUser
+
+admin.site.unregister(Group)
 
 
 class RequestUserModelAdmin(admin.ModelAdmin):
@@ -15,19 +18,25 @@ class RequestUserModelAdmin(admin.ModelAdmin):
         obj.user_id = request.user
         super().save_model(request, obj, form, change)
 
+
 @admin.register(CustomUser)
 class CustomUserAdmin(admin.ModelAdmin):
     fields = ["fullname", "birth_date", "description", "address", "phone_number", "job", "website", "email"]
     list_display = ["id", "username", "fullname"]
-    
+
     def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
         query = super().get_queryset(request).filter(id=request.user.id)
         return query
+
+    def has_add_permission(self, request, obj=None):
+        return False
+
 
 @admin.register(Image)
 class ImageAdmin(RequestUserModelAdmin):
     fields = ["image", "type"]
     list_display = ["image_id", "image", "type", "user_id"]
+
 
 @admin.register(Section)
 class SectionAdmin(RequestUserModelAdmin):
@@ -39,6 +48,7 @@ class SectionAdmin(RequestUserModelAdmin):
         form.base_fields['image_id'].queryset = Image.objects.filter(user_id=request.user).filter(type='l')
         return form
 
+
 @admin.register(Skill)
 class SkillAdmin(RequestUserModelAdmin):
     fields = ["name", "value", "visibility", "section_id"]
@@ -48,6 +58,7 @@ class SkillAdmin(RequestUserModelAdmin):
         form = super(SkillAdmin, self).get_form(request, obj, **kwargs)
         form.base_fields['section_id'].queryset = Section.objects.filter(user_id=request.user)
         return form
+
 
 @admin.register(Statistic)
 class StatisticAdmin(RequestUserModelAdmin):
@@ -59,6 +70,7 @@ class StatisticAdmin(RequestUserModelAdmin):
         form.base_fields['section_id'].queryset = Section.objects.filter(user_id=request.user)
         return form
 
+
 @admin.register(CV)
 class CVAdmin(RequestUserModelAdmin):
     fields = ["file", "section_id"]
@@ -69,15 +81,18 @@ class CVAdmin(RequestUserModelAdmin):
         form.base_fields['section_id'].queryset = Section.objects.filter(user_id=request.user)
         return form
 
+
 @admin.register(History)
 class HistoryAdmin(RequestUserModelAdmin):
     fields = ["title", "subtitle", "description", "visible", "type", "date_started", "date_ended", "section_id"]
-    list_display = ["history_id", "title", "subtitle", "description", "visible", "type", "date_started", "date_ended", "section_id", "user_id"]
+    list_display = ["history_id", "title", "subtitle", "description", "visible",
+                    "type", "date_started", "date_ended", "section_id", "user_id"]
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(HistoryAdmin, self).get_form(request, obj, **kwargs)
         form.base_fields['section_id'].queryset = Section.objects.filter(user_id=request.user)
         return form
+
 
 @admin.register(Service)
 class ServiceAdmin(RequestUserModelAdmin):
@@ -90,6 +105,7 @@ class ServiceAdmin(RequestUserModelAdmin):
         form.base_fields['section_id'].queryset = Section.objects.filter(user_id=request.user)
         return form
 
+
 @admin.register(Project)
 class ProjectAdmin(RequestUserModelAdmin):
     fields = ["title", "description", "tag", "link", "visible", "image_id", "section_id"]
@@ -100,6 +116,7 @@ class ProjectAdmin(RequestUserModelAdmin):
         form.base_fields['image_id'].queryset = Image.objects.filter(user_id=request.user).filter(type='m')
         form.base_fields['section_id'].queryset = Section.objects.filter(user_id=request.user)
         return form
+
 
 @admin.register(Social)
 class SocialAdmin(RequestUserModelAdmin):
@@ -112,7 +129,11 @@ class SocialAdmin(RequestUserModelAdmin):
         form.base_fields['section_id'].queryset = Section.objects.filter(user_id=request.user)
         return form
 
+
 @admin.register(Message)
 class MessageAdmin(RequestUserModelAdmin):
     fields = ["name", "email", "subject", "message"]
     list_display = ["message_id", "name", "email", "subject", "message", "user_id"]
+
+    def has_add_permission(self, request, obj=None):
+        return False
