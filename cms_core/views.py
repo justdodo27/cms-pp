@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from .models import Section, History, CustomUser, Message, Social, Skill
+from .models import Section, History, CustomUser, Message, Social, Skill, Service
 from .forms import MessageForm
 
 from itertools import groupby
@@ -22,12 +22,11 @@ def categorize_histories(x):
     }
 
 
-def parse_data(x):
-    data = []
-    for el in x:
-        data.append(el)
-
-    return data
+def group_data_by_section(data) -> dict:
+    return {
+        i: [el for el in j]
+        for i, j in groupby(data, lambda x: x.section_id.section_id)
+    }
 
 
 def website(request, user_id):
@@ -47,29 +46,23 @@ def website(request, user_id):
             message = f"Your message {request.POST['subject']} sent succesfully."
 
     # load user data etc.
+    user_data = CustomUser.objects.get(id=user_id)
     sections = Section.objects.filter(user_id=user_id, visible=True).all()
     socials = Social.objects.filter(user_id=user_id).all()
-    social_data = {
-        i: parse_data(j)
-        for i, j in groupby(socials, lambda social: social.section_id.section_id)
-    }
-    user_data = CustomUser.objects.get(id=user_id)
     histories = History.objects.filter(user_id=user_id, visible=True).all()
     histories_data = {
         i: categorize_histories(j)
         for i, j in groupby(histories, lambda history: history.section_id.section_id)
     }
-    skills = Skill.objects.filter(user_id=user_id).all()
-    skills_data = {
-        i: parse_data(j)
-        for i, j in groupby(skills, lambda skill: skill.section_id.section_id)
-    }
+    skills = Skill.objects.filter(user_id=user_id, visibility=True).all()
+    services = Service.objects.filter(user_id=user_id, visible=True).all()
 
     context = {
         "sections": sections,
         "histories": histories_data,
-        "socials": social_data,
-        "skills": skills_data,
+        "socials": group_data_by_section(socials),
+        "skills": group_data_by_section(skills),
+        "services": group_data_by_section(services),
         "user": user_data,
         "form": MessageForm(),
         "message": message
