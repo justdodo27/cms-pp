@@ -7,6 +7,7 @@ from .models import Section, Skill, Image, Statistic, CV, History, Service, Proj
 
 admin.site.unregister(Group)
 
+
 class RequestUserModelAdmin(admin.ModelAdmin):
     def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
         query = super().get_queryset(request).filter(user_id=request.user.id)
@@ -16,6 +17,7 @@ class RequestUserModelAdmin(admin.ModelAdmin):
         # associating the current logged in user to the client_id
         obj.user_id = request.user
         super().save_model(request, obj, form, change)
+
 
 @admin.register(CustomUser)
 class CustomUserAdmin(admin.ModelAdmin):
@@ -29,10 +31,12 @@ class CustomUserAdmin(admin.ModelAdmin):
     def has_add_permission(self, request, obj=None):
         return False
 
+
 @admin.register(Image)
 class ImageAdmin(RequestUserModelAdmin):
     fields = ["image", "type"]
     list_display = ["image_id", "image", "type", "user_id"]
+
 
 @admin.register(Section)
 class SectionAdmin(RequestUserModelAdmin):
@@ -44,6 +48,7 @@ class SectionAdmin(RequestUserModelAdmin):
         form.base_fields['image_id'].queryset = Image.objects.filter(user_id=request.user).filter(type='l')
         return form
 
+
 @admin.register(Skill)
 class SkillAdmin(RequestUserModelAdmin):
     fields = ["name", "value", "visibility", "section_id"]
@@ -53,6 +58,7 @@ class SkillAdmin(RequestUserModelAdmin):
         form = super(SkillAdmin, self).get_form(request, obj, **kwargs)
         form.base_fields['section_id'].queryset = Section.objects.filter(user_id=request.user)
         return form
+
 
 @admin.register(Statistic)
 class StatisticAdmin(RequestUserModelAdmin):
@@ -64,6 +70,7 @@ class StatisticAdmin(RequestUserModelAdmin):
         form.base_fields['section_id'].queryset = Section.objects.filter(user_id=request.user)
         return form
 
+
 @admin.register(CV)
 class CVAdmin(RequestUserModelAdmin):
     fields = ["file", "section_id"]
@@ -74,15 +81,18 @@ class CVAdmin(RequestUserModelAdmin):
         form.base_fields['section_id'].queryset = Section.objects.filter(user_id=request.user)
         return form
 
+
 @admin.register(History)
 class HistoryAdmin(RequestUserModelAdmin):
     fields = ["title", "subtitle", "description", "visible", "type", "date_started", "date_ended", "section_id"]
-    list_display = ["history_id", "title", "subtitle", "description", "visible", "type", "date_started", "date_ended", "section_id", "user_id"]
+    list_display = ["history_id", "title", "subtitle", "description", "visible",
+                    "type", "date_started", "date_ended", "section_id", "user_id"]
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(HistoryAdmin, self).get_form(request, obj, **kwargs)
         form.base_fields['section_id'].queryset = Section.objects.filter(user_id=request.user)
         return form
+
 
 @admin.register(Service)
 class ServiceAdmin(RequestUserModelAdmin):
@@ -95,6 +105,7 @@ class ServiceAdmin(RequestUserModelAdmin):
         form.base_fields['section_id'].queryset = Section.objects.filter(user_id=request.user)
         return form
 
+
 @admin.register(Project)
 class ProjectAdmin(RequestUserModelAdmin):
     fields = ["title", "description", "tag", "link", "visible", "image_id", "section_id"]
@@ -106,6 +117,7 @@ class ProjectAdmin(RequestUserModelAdmin):
         form.base_fields['section_id'].queryset = Section.objects.filter(user_id=request.user)
         return form
 
+
 @admin.register(Social)
 class SocialAdmin(RequestUserModelAdmin):
     fields = ["title", "link", "image_id", "section_id"]
@@ -116,6 +128,7 @@ class SocialAdmin(RequestUserModelAdmin):
         form.base_fields['image_id'].queryset = Image.objects.filter(user_id=request.user).filter(type='i')
         form.base_fields['section_id'].queryset = Section.objects.filter(user_id=request.user)
         return form
+
 
 @admin.register(Message)
 class MessageAdmin(RequestUserModelAdmin):

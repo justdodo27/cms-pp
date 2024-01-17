@@ -1,12 +1,13 @@
 from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.models import User
 from django.db import models
 
 from datetime import datetime
 
-def user_image_directory_path(instance, filename): 
-    # file will be uploaded to MEDIA_ROOT /images/user_<id>/<filename> 
-    return 'images/user_{0}/{1}'.format(instance.user_id_id, filename) 
+
+def user_image_directory_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT /images/user_<id>/<filename>
+    return 'images/user_{0}/{1}'.format(instance.user_id_id, filename)
+
 
 IMAGE_TYPES_CHOICES = [
     ('i', 'Icon'),
@@ -49,6 +50,7 @@ SECTION_TYPES_CHOICES = [
     ("c", "Contact"),
 ]
 
+
 class Section(models.Model):
     section_id = models.IntegerField(primary_key=True)
     header = models.CharField(max_length=64)
@@ -62,7 +64,7 @@ class Section(models.Model):
         null=False,
         blank=False,
     )
-    image_id = models.ForeignKey( # only large images
+    image_id = models.ForeignKey(  # only large images
         Image,
         on_delete=models.SET_NULL,
         null=True,
@@ -71,6 +73,9 @@ class Section(models.Model):
 
     def __str__(self):
         return self.header
+
+    class Meta:
+        ordering = ['order', 'section_id']
 
 
 class Skill(models.Model):
@@ -116,9 +121,10 @@ class Statistic(models.Model):
         return self.label
 
 
-def user_cv_directory_path(instance, filename): 
-    # file will be uploaded to MEDIA_ROOT /cvs/user_<id>/<filename> 
-    return 'cvs/user_{0}/{1}'.format(instance.user_id_id, filename) 
+def user_cv_directory_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT /cvs/user_<id>/<filename>
+    return 'cvs/user_{0}/{1}'.format(instance.user_id_id, filename)
+
 
 class CV(models.Model):
     cv_id = models.IntegerField(primary_key=True)
@@ -145,6 +151,7 @@ HISTORY_TYPES_CHOICES = [
     ('e', "Education")
 ]
 
+
 class History(models.Model):
     history_id = models.IntegerField(primary_key=True)
     title = models.CharField(max_length=64)
@@ -169,7 +176,7 @@ class History(models.Model):
 
     def __str__(self):
         return self.title
-    
+
     class Meta:
         verbose_name_plural = "histories"
 
@@ -180,7 +187,7 @@ class Service(models.Model):
     description = models.TextField()
     order = models.IntegerField()
     visible = models.BooleanField()
-    image_id = models.ForeignKey( # only icons
+    image_id = models.ForeignKey(  # only icons
         Image,
         on_delete=models.SET_NULL,
         null=True,
@@ -210,7 +217,7 @@ class Project(models.Model):
     tag = models.CharField(max_length=64)
     link = models.CharField(max_length=64)
     visible = models.BooleanField()
-    image_id = models.ForeignKey( # only medium images
+    image_id = models.ForeignKey(  # only medium images
         Image,
         on_delete=models.SET_NULL,
         null=True,
@@ -237,7 +244,7 @@ class Social(models.Model):
     social_id = models.IntegerField(primary_key=True)
     title = models.CharField(max_length=64)
     link = models.CharField(max_length=64)
-    image_id = models.ForeignKey( # only icon images
+    image_id = models.ForeignKey(  # only icon images
         Image,
         on_delete=models.SET_NULL,
         null=True,
