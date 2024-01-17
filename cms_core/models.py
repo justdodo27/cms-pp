@@ -153,7 +153,7 @@ class History(models.Model):
     visible = models.BooleanField()
     type = models.CharField(max_length=64, choices=HISTORY_TYPES_CHOICES)
     date_started = models.DateTimeField()
-    date_ended = models.DateTimeField(null=True)
+    date_ended = models.DateTimeField(null=True, blank=True)
     section_id = models.ForeignKey(
         Section,
         on_delete=models.SET_NULL,

@@ -236,7 +236,7 @@
 
 	   				<div class="timeline-header">
 	   					<h3>{{ work_history.title }}</h3>
-	   					<p>{{ work_history.date_started|date:"M, Y" }} - {{ work_history.date_ended|date:"M, Y" }}</p>
+	   					<p>{{ work_history.date_started|date:"M, Y" }} - {{ work_history.date_ended|date:"M, Y"|default:"Present" }}</p>
 	   				</div>
 
 	   				<div class="timeline-content">
@@ -274,7 +274,7 @@
 
 	   				<div class="timeline-header">
 						<h3>{{ edu_history.title }}</h3>
-						<p>{{ edu_history.date_started|date:"M, Y" }} - {{ edu_history.date_ended|date:"M, Y" }}</p>
+						<p>{{ edu_history.date_started|date:"M, Y" }} - {{ edu_history.date_ended|date:"M, Y"|default:"Present" }}</p>
 					</div>
 
 					<div class="timeline-content">
