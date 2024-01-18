@@ -41,7 +41,7 @@ class ImageAdmin(RequestUserModelAdmin):
 @admin.register(Section)
 class SectionAdmin(RequestUserModelAdmin):
     fields = ["header", "description", "order", "visible", "type", "image_id"]
-    list_display = ["section_id", "header", "description", "order", "visible", "type", "user_id", "image_id"]
+    list_display = ["section_id", "header", "order", "visible", "type", "user_id", "image_id"]
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(SectionAdmin, self).get_form(request, obj, **kwargs)
@@ -85,7 +85,7 @@ class CVAdmin(RequestUserModelAdmin):
 @admin.register(History)
 class HistoryAdmin(RequestUserModelAdmin):
     fields = ["title", "subtitle", "description", "visible", "type", "date_started", "date_ended", "section_id"]
-    list_display = ["history_id", "title", "subtitle", "description", "visible",
+    list_display = ["history_id", "title", "subtitle", "visible",
                     "type", "date_started", "date_ended", "section_id", "user_id"]
 
     def get_form(self, request, obj=None, **kwargs):
@@ -97,7 +97,7 @@ class HistoryAdmin(RequestUserModelAdmin):
 @admin.register(Service)
 class ServiceAdmin(RequestUserModelAdmin):
     fields = ["title", "description", "order", "visible", "image_id", "section_id"]
-    list_display = ["service_id", "title", "description", "order", "visible", "image_id", "section_id", "user_id"]
+    list_display = ["service_id", "title", "order", "visible", "image_id", "section_id", "user_id"]
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(ServiceAdmin, self).get_form(request, obj, **kwargs)
@@ -109,7 +109,7 @@ class ServiceAdmin(RequestUserModelAdmin):
 @admin.register(Project)
 class ProjectAdmin(RequestUserModelAdmin):
     fields = ["title", "description", "tag", "link", "visible", "image_id", "section_id"]
-    list_display = ["project_id", "title", "description", "tag", "link", "visible", "image_id", "section_id", "user_id"]
+    list_display = ["project_id", "title", "tag", "link", "visible", "image_id", "section_id", "user_id"]
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(ProjectAdmin, self).get_form(request, obj, **kwargs)

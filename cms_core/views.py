@@ -49,6 +49,7 @@ def website(request, user_id):
     user_data = CustomUser.objects.get(id=user_id)
     sections = Section.objects.filter(user_id=user_id, visible=True).all()
     socials = Social.objects.filter(user_id=user_id).all()
+    print(socials[0].image_id.image.url)
     histories = History.objects.filter(user_id=user_id, visible=True).all()
     histories_data = {
         i: categorize_histories(j)
