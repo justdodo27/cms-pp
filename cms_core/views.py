@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from .models import Section, History, CustomUser, Message, Social, Skill, Service, Statistic
+from .models import Section, History, CustomUser, Message, Social, Skill, Service, Statistic, Project, CV
 from .forms import MessageForm
 
 from itertools import groupby
@@ -49,7 +49,6 @@ def website(request, user_id):
     user_data = CustomUser.objects.get(id=user_id)
     sections = Section.objects.filter(user_id=user_id, visible=True).all()
     socials = Social.objects.filter(user_id=user_id).all()
-    print(socials[0].image_id.image.url)
     histories = History.objects.filter(user_id=user_id, visible=True).all()
     histories_data = {
         i: categorize_histories(j)
@@ -58,7 +57,9 @@ def website(request, user_id):
     skills = Skill.objects.filter(user_id=user_id, visibility=True).all()
     services = Service.objects.filter(user_id=user_id, visible=True).all()
     statistics = Statistic.objects.filter(user_id=user_id).all()
-
+    projects = Project.objects.filter(user_id=user_id, visible=True).all()
+    cvs = CV.objects.filter(user_id=user_id).all()
+    
     context = {
         "user": user_data,
         "sections": sections,
@@ -67,6 +68,8 @@ def website(request, user_id):
         "skills": group_data_by_section(skills),
         "services": group_data_by_section(services),
         "statistics": group_data_by_section(statistics),
+        "projects": group_data_by_section(projects),
+        "cvs": group_data_by_section(cvs),
         "form": MessageForm(),
         "message": message
     }
