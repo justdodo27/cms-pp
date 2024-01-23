@@ -94,7 +94,7 @@
 				{% for social in socials|get_item:section.section_id %}
 					<li>
 						<a href="{{ social.link }}">
-							<img src="{{social.image_id.image.url}}" alt="{{social.image_id.image}}">
+							<img src="{{social.image_id.image.url}}" alt="{{social.image_id.image}}" width="34px">
 						</a>
 					</li>
 				{% endfor %}
@@ -375,8 +375,8 @@
 					{% for service in services|get_item:section.section_id %}
 						<div class="service">	
 							<span class="icon">
-								<img src="{{ service.image_id.image.url }}" alt="{{ service.title }}" />
-							</span> <!-- TODO: Add image -->           
+								<img src="{{ service.image_id.image.url }}" alt="{{ service.title }}" width="40px"/>
+							</span>         
 
 							<div class="service-content">	
 								<h3>{{ service.title }}</h3>

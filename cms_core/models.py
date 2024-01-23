@@ -1,5 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.core.exceptions import ValidationError
+from django.core.files.images import get_image_dimensions
 
 from datetime import datetime
 
@@ -39,6 +41,19 @@ class Image(models.Model):
 
     def __str__(self):
         return self.image.name.split('/')[-1]
+    
+    def clean(self) -> None:
+        if not self.image:
+            raise ValidationError("No image!")
+        else:
+            w, h = get_image_dimensions(self.image)
+            if self.type == 'i' and (w > 40 or h > 40):
+                raise ValidationError("Image of type icon cannot be larger than 40 by 40 pixels")
+            elif self.type == 'm' and (w > 1200 or h > 1200):
+                raise ValidationError("Image of type medium cannot be larger than 1200 by 1200 pixels")
+            elif self.type == 'l' and (w > 4000 or h > 4000):
+                raise ValidationError("Image of type large cannot be larger than 4000 by 4000 pixels")
+        return super().clean()
 
 
 SECTION_TYPES_CHOICES = [
