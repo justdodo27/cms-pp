@@ -1,4 +1,5 @@
 from typing import Any
+from django import forms
 from django.contrib import admin
 from django.db.models.query import QuerySet
 from django.http.request import HttpRequest
@@ -65,7 +66,7 @@ class SkillAdmin(RequestUserModelAdmin):
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(SkillAdmin, self).get_form(request, obj, **kwargs)
-        form.base_fields['section_id'].queryset = Section.objects.filter(user_id=request.user)
+        form.base_fields['section_id'].queryset = Section.objects.filter(user_id=request.user, type='a')
         return form
 
 
@@ -76,7 +77,7 @@ class StatisticAdmin(RequestUserModelAdmin):
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(StatisticAdmin, self).get_form(request, obj, **kwargs)
-        form.base_fields['section_id'].queryset = Section.objects.filter(user_id=request.user)
+        form.base_fields['section_id'].queryset = Section.objects.filter(user_id=request.user, type='c')
         return form
 
 
@@ -87,7 +88,7 @@ class CVAdmin(RequestUserModelAdmin):
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(CVAdmin, self).get_form(request, obj, **kwargs)
-        form.base_fields['section_id'].queryset = Section.objects.filter(user_id=request.user)
+        form.base_fields['section_id'].queryset = Section.objects.filter(user_id=request.user, type='a')
         return form
 
 
@@ -99,7 +100,7 @@ class HistoryAdmin(RequestUserModelAdmin):
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(HistoryAdmin, self).get_form(request, obj, **kwargs)
-        form.base_fields['section_id'].queryset = Section.objects.filter(user_id=request.user)
+        form.base_fields['section_id'].queryset = Section.objects.filter(user_id=request.user, type='r')
         return form
 
 
@@ -111,7 +112,7 @@ class ServiceAdmin(RequestUserModelAdmin):
     def get_form(self, request, obj=None, **kwargs):
         form = super(ServiceAdmin, self).get_form(request, obj, **kwargs)
         form.base_fields['image_id'].queryset = Image.objects.filter(user_id=request.user).filter(type='i')
-        form.base_fields['section_id'].queryset = Section.objects.filter(user_id=request.user)
+        form.base_fields['section_id'].queryset = Section.objects.filter(user_id=request.user, type='s')
         return form
 
 
@@ -123,7 +124,7 @@ class ProjectAdmin(RequestUserModelAdmin):
     def get_form(self, request, obj=None, **kwargs):
         form = super(ProjectAdmin, self).get_form(request, obj, **kwargs)
         form.base_fields['image_id'].queryset = Image.objects.filter(user_id=request.user).filter(type='m')
-        form.base_fields['section_id'].queryset = Section.objects.filter(user_id=request.user)
+        form.base_fields['section_id'].queryset = Section.objects.filter(user_id=request.user, type='p')
         return form
 
 
@@ -135,7 +136,7 @@ class SocialAdmin(RequestUserModelAdmin):
     def get_form(self, request, obj=None, **kwargs):
         form = super(SocialAdmin, self).get_form(request, obj, **kwargs)
         form.base_fields['image_id'].queryset = Image.objects.filter(user_id=request.user).filter(type='i')
-        form.base_fields['section_id'].queryset = Section.objects.filter(user_id=request.user)
+        form.base_fields['section_id'].queryset = Section.objects.filter(user_id=request.user, type='h')
         return form
 
 
