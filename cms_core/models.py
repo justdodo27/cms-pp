@@ -114,6 +114,21 @@ class Skill(models.Model):
     def __str__(self):
         return self.name
 
+    def clean(self) -> None:
+        if not self.value:
+            raise ValidationError('No value provided.')
+
+        if self.value >= 100:
+            raise ValidationError('Value must be in the range (0 - 100).')
+
+        modulo = self.value % 10
+        if modulo < 5:
+            self.value -= modulo
+        elif modulo >= 5:
+            self.value = self.value - modulo + 5
+
+        return super().clean()
+
 
 class Statistic(models.Model):
     statistic_id = models.IntegerField(primary_key=True)

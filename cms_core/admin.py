@@ -49,10 +49,19 @@ class SectionAdmin(RequestUserModelAdmin):
         return form
 
 
+class SkillAdminForm(forms.ModelForm):
+    class Meta:
+        model = Skill
+        widgets = {
+            'value': forms.NumberInput(attrs={'min': 0, 'max': 100, 'step': 5}),
+        }
+        fields = ["name", "value", "visibility", "section_id"]
+
 @admin.register(Skill)
 class SkillAdmin(RequestUserModelAdmin):
     fields = ["name", "value", "visibility", "section_id"]
     list_display = ["skill_id", "name", "value", "visibility", "section_id", "user_id"]
+    form = SkillAdminForm
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(SkillAdmin, self).get_form(request, obj, **kwargs)
